@@ -1,6 +1,6 @@
-package org.gerdoc.util;
+package org.roddoc.util;
 
-import org.gerdoc.vista.Menu;
+import org.roddoc.vista.Menu;
 import java.util.Scanner;
 
 public class ReadUtil {

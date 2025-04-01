@@ -1,17 +1,14 @@
-package org.gerdoc.model;
+package org.roddoc.model;
 
-public abstract class Vivienda
+import java.io.Serializable;
+
+public abstract class Vivienda implements Serializable
 {
     protected Integer id;
     protected String nombre;
 
-    public Vivienda() {
-    }
-
-    public Vivienda(Integer id, String nombre)
+    public Vivienda()
     {
-        this.id = id;
-        this.nombre = nombre;
     }
 
     public Integer getId()
@@ -22,21 +19,22 @@ public abstract class Vivienda
     public void setId(Integer id)
     {
         this.id = id;
+        this.nombre = nombre;
     }
 
-    public String getNombre()
-    {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre)
-    {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     @Override
     public String toString()
     {
-        return "ID: "+id+"\nNombre: "+nombre;
+        return "Vivienda{" +
+                "id=" + id +
+                '}';
     }
 }
