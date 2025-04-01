@@ -3,6 +3,8 @@ package org.gerdoc.pixup.gui.consola;
 import org.gerdoc.pixup.model.Artista;
 import org.gerdoc.pixup.util.ReadUtil;
 
+import java.io.File;
+
 public class ArtistaCatalogo extends Catalogos<Artista>{
     private static ArtistaCatalogo artistaCatalogo;
 
@@ -33,5 +35,10 @@ public class ArtistaCatalogo extends Catalogos<Artista>{
         System.out.println("Artista a editar: " + artista.getArtista( ));
         System.out.println("Teclee el valor nuevo del Artyista" );
         artista.setArtista( ReadUtil.read( ) );
+    }
+
+    @Override
+    public File getFile() {
+        return new File("Artista.list");
     }
 }
