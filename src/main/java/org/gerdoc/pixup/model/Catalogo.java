@@ -1,6 +1,8 @@
 package org.gerdoc.pixup.model;
 
-public abstract class Catalogo
+import java.io.Serializable;
+
+public abstract class Catalogo implements Serializable
 {
     protected Integer id;
 

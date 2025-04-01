@@ -1,6 +1,8 @@
 package org.gerdoc.pixup.model;
 
-public class Estado extends Catalogo
+import java.io.Serializable;
+
+public class Estado extends Catalogo  implements Serializable
 {
     private String nombre;
 
