@@ -1,8 +1,8 @@
 package org.roddoc.vista.consola;
 
-import org.roddoc.vista.ejecucion.Ejecutable;
+import org.roddoc.vista.LeerAcciones;
+import org.roddoc.vista.Ejecutable;
 import org.roddoc.vista.Menu;
-import org.roddoc.vista.ejecucion.LeerAcciones;
 
 public class Consola extends LeerAcciones
 {
@@ -60,3 +60,4 @@ public class Consola extends LeerAcciones
         }
     }
 }
+

@@ -1,12 +1,30 @@
 package org.roddoc.model;
 
-public class Colonia extends Vivienda
+public class Colonia extends Catalogo
 {
+    private String nombre;
     private String cp;
     private Municipio municipio;
 
     public Colonia()
     {
+    }
+
+    public Colonia(String nombre, String cp, Municipio municipio)
+    {
+        this.nombre = nombre;
+        this.cp = cp;
+        this.municipio = municipio;
+    }
+
+    public String getNombre()
+    {
+        return nombre;
+    }
+
+    public void setNombre(String nombre)
+    {
+        this.nombre = nombre;
     }
 
     public String getCp() {
@@ -37,3 +55,4 @@ public class Colonia extends Vivienda
                 "}";
     }
 }
+

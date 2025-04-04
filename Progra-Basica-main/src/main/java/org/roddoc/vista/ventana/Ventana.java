@@ -1,6 +1,6 @@
 package org.roddoc.vista.ventana;
 
-import org.roddoc.vista.ejecucion.Ejecutable;
+import org.roddoc.vista.Ejecutable;
 
 public class Ventana implements Ejecutable
 {

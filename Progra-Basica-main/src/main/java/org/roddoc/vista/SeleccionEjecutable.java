@@ -1,6 +1,5 @@
-package org.roddoc.vista.ejecucion;
+package org.roddoc.vista;
 
-import org.roddoc.vista.Menu;
 import org.roddoc.vista.consola.Consola;
 import org.roddoc.vista.ventana.Ventana;
 
@@ -24,7 +23,7 @@ public class SeleccionEjecutable extends LeerAcciones
     @Override
     public void despliegaMenu()
     {
-        System.out.println("\n\t---¡Bienvenido a PixUp!---");
+        System.out.println("\n\t:::¡Bienvenido a PixUp! :::");
         System.out.println("\t> Selecciona tu método de acceso:");
         System.out.println("1. Consola");
         System.out.println("2. Ventana");

@@ -1,6 +1,7 @@
 package org.roddoc.util;
 
 import org.roddoc.vista.Menu;
+
 import java.util.Scanner;
 
 public class ReadUtil {
@@ -52,7 +53,7 @@ public class ReadUtil {
             if (valor != null && !valor.isEmpty()) {
                 try {
                     aux = Double.valueOf(valor);
-                    if (aux > 0) { // Solo permite valores positivos
+                    if (aux >= 0) { // Solo permite valores positivos
                         return aux;
                     } else {
                         System.out.println("> Error: Ingresa un número positivo.");

@@ -1,7 +1,6 @@
-package org.roddoc.vista.ejecucion;
+package org.roddoc.vista;
 
 import org.roddoc.util.ReadUtil;
-import org.roddoc.vista.Menu;
 
 public abstract class LeerAcciones implements Ejecutable
 {

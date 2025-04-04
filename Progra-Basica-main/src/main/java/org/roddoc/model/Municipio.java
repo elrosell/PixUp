@@ -2,12 +2,29 @@ package org.roddoc.model;
 
 import java.io.Serializable;
 
-public class Municipio extends Vivienda implements Serializable
+public class Municipio extends Catalogo implements Serializable
 {
+    private String nombre;
     private Estado estado;
 
     public Municipio()
     {
+    }
+
+    public Municipio(String nombre, Estado estado)
+    {
+        this.nombre = nombre;
+        this.estado = estado;
+    }
+
+    public String getNombre()
+    {
+        return nombre;
+    }
+
+    public void setNombre(String nombre)
+    {
+        this.nombre = nombre;
     }
 
     public Estado getEstado() {
@@ -28,3 +45,4 @@ public class Municipio extends Vivienda implements Serializable
                 "}";
     }
 }
+
