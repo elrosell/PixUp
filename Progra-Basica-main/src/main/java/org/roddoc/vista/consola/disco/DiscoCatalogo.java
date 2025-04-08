@@ -3,7 +3,7 @@ package org.roddoc.vista.consola.disco;
 import org.roddoc.model.Artista;
 import org.roddoc.model.Disco;
 import org.roddoc.model.Disquera;
-import org.roddoc.model.GeneroMusical;
+import org.roddoc.model.Genero_Musical;
 import org.roddoc.util.ReadUtil;
 import org.roddoc.vista.Menu;
 import org.roddoc.vista.consola.GestorCatalogos;
@@ -69,7 +69,7 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
             disco.setArtista(artista);
         }
 
-        GeneroMusical generoMusical = GeneroMusicalCatalogo.getInstance().getGeneroById();
+        Genero_Musical generoMusical = GeneroMusicalCatalogo.getInstance().getGeneroById();
         if(generoMusical==null)
         {
             return false;
@@ -142,7 +142,7 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
                 }
                 break;
             case 9:
-                GeneroMusical generoMusical = GeneroMusicalCatalogo.getInstance().getGeneroById();
+                Genero_Musical generoMusical = GeneroMusicalCatalogo.getInstance().getGeneroById();
                 if(generoMusical==null)
                 {
                     System.out.println("> Género musical no encontrado. No se pudo actualizar; compruébelo e inténtelo de nuevo.");

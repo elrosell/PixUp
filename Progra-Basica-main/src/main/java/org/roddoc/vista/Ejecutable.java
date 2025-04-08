@@ -1,6 +1,6 @@
 package org.roddoc.vista;
 
-public interface Ejecutable {
+public interface    Ejecutable {
     void run();
     void setFlag(boolean flag);
 }

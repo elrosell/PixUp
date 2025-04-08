@@ -1,5 +1,4 @@
 package org.roddoc.model;
-
 import java.io.Serializable;
 
 public abstract class   Catalogo implements Serializable
