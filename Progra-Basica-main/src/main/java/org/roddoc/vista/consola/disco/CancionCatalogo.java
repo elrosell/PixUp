@@ -1,19 +1,21 @@
 package org.roddoc.vista.consola.disco;
 
-import org.roddoc.model.Cancion;
-import org.roddoc.model.Disco;
+import org.roddoc.jdbc.GenericJdbc;
+import org.roddoc.jdbc.impl.CancionJdbcImpl;
+import org.roddoc.jdbc.impl.DiscoJdbcImpl;
+import org.roddoc.model.*;
 import org.roddoc.util.ReadUtil;
 import org.roddoc.vista.consola.GestorCatalogos;
-
 import java.io.File;
 
 public class CancionCatalogo extends GestorCatalogos<Cancion>
 {
     private static CancionCatalogo cancionCatalogo;
+    private static final GenericJdbc<Cancion> cancionJdbc = CancionJdbcImpl.getInstance();
 
     private CancionCatalogo()
     {
-        super();
+        super(CancionJdbcImpl.getInstance());
     }
 
     public static CancionCatalogo getInstance()
@@ -37,41 +39,23 @@ public class CancionCatalogo extends GestorCatalogos<Cancion>
         System.out.print("> Ingrese la duración de la canción en minutos: ");
         cancion.setDuracion( ReadUtil.readDouble() );
 
-        Disco disco = DiscoCatalogo.getInstance().getDiscoById();
-        if(disco==null)
-        {
-            return false;
-        }
-        else
-        {
-            cancion.setDisco( disco );
-        }
+        System.out.print("> Ingrese el ID del disco al que pertenece: ");
+        Disco disco = DiscoJdbcImpl.getInstance().findById( ReadUtil.readInt() );
+        if(disco==null) { return false; }
+        else { cancion.setDisco( disco ); }
 
+        cancionJdbc.save(cancion);
         return true;
     }
 
     @Override
-    public void processEditT(Cancion cancion) {
-        System.out.println("> ID de la canción siendo editada: "+cancion.getId());
-        System.out.println("> Canción siendo editada: "+cancion.getTituloCancion());
+    public void edit(Cancion cancion) {
+        System.out.print("> Ingrese el ID de la canción a editar: ");
+        cancion.setId( ReadUtil.readInt() );
         System.out.print("> Ingrese el nuevo título de la canción: ");
         cancion.setTituloCancion( ReadUtil.read() );
-        System.out.print("> Ingrese la nueva duración de la canción en minutos: ");
-        cancion.setDuracion( ReadUtil.readDouble() );
 
-        Disco disco = DiscoCatalogo.getInstance().getDiscoById();
-        if(disco==null)
-        {
-            System.out.println("> Disco no encontrado. No se pudo actualizar; compruébelo e inténtelo de nuevo.");;
-        }
-        else
-        {
-            cancion.setDisco( disco );
-        }
+        cancionJdbc.update(cancion);
     }
 
-    @Override
-    public File getFile() {
-        return new File( "./src/main/fileStorage/Canciones.object" );
-    }
 }

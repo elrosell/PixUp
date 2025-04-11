@@ -44,4 +44,3 @@ public class Municipio extends Catalogo implements Serializable
                 "}";
     }
 }
-

@@ -1,16 +1,17 @@
 package org.roddoc.vista.consola.usuario;
 
+import org.roddoc.jdbc.GenericJdbc;
+import org.roddoc.jdbc.impl.ColoniaJdbcImpl;
+import org.roddoc.jdbc.impl.MunicipioJdbcImpl;
 import org.roddoc.model.Colonia;
 import org.roddoc.model.Municipio;
 import org.roddoc.util.ReadUtil;
 import org.roddoc.vista.consola.GestorCatalogos;
 
-import java.io.File;
-
 public class ColoniaCatalogo extends GestorCatalogos<Colonia>
 {
     private static ColoniaCatalogo coloniaCatalogo;
-    private MunicipioCatalogo municipioCatalogo;
+    private static final GenericJdbc<Colonia> coloniaJdbc = ColoniaJdbcImpl.getInstance();
 
     public static ColoniaCatalogo getInstance( )
     {
@@ -23,8 +24,7 @@ public class ColoniaCatalogo extends GestorCatalogos<Colonia>
 
     private ColoniaCatalogo( )
     {
-        super();
-        municipioCatalogo = MunicipioCatalogo.getInstance();
+        super(ColoniaJdbcImpl.getInstance());
     }
 
     @Override
@@ -40,41 +40,31 @@ public class ColoniaCatalogo extends GestorCatalogos<Colonia>
         colonia.setNombre( ReadUtil.read() );
         System.out.print("> Teclee el código postal de la colonia: ");
         colonia.setCp( ReadUtil.read() );
-        Municipio municipio = municipioCatalogo.getMunicipioById();
+
+        System.out.print("> Teclee el ID del municipio al que pertenece: ");
+        Municipio municipio = MunicipioJdbcImpl.getInstance().findById(ReadUtil.readInt());
 
         if(municipio==null)
         {
             return false;
         }
         colonia.setMunicipio(municipio);
+
+        coloniaJdbc.save(colonia);
         return true;
     }
 
     @Override
-    public void processEditT(Colonia colonia)
+    public void edit(Colonia colonia)
     {
-        System.out.println("\n> ID de la colonia siendo editada: "+colonia.getId());
-        System.out.println("> Colonia siendo editada: "+colonia.getNombre());
+        System.out.print("> Inserte el ID de la colonia a editar: ");
+        colonia.setId( ReadUtil.readInt() );
         System.out.print("> Ingrese el nuevo nombre de la colonia: ");
         colonia.setNombre( ReadUtil.read() );
         System.out.print("> Ingrese el nuevo código postal de la colonia: ");
         colonia.setCp( ReadUtil.read() );
 
-        Municipio municipio = municipioCatalogo.getMunicipioById();
-
-        if(municipio==null)
-        {
-            System.out.println("> Estado no encontrado. No se pudo actualizar el estado del municipio, compruébelo e inténtelo de nuevo.");
-        }
-        else
-        {
-            colonia.setMunicipio(municipio);
-        }
+        coloniaJdbc.update(colonia);
     }
 
-    @Override
-    public File getFile() {
-        return new File("./src/main/fileStorage/Colonias.list" );
-    }
 }
-

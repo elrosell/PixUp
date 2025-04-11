@@ -3,10 +3,7 @@ package org.roddoc.vista.consola;
 import org.roddoc.vista.Ejecutable;
 import org.roddoc.vista.LeerAcciones;
 import org.roddoc.vista.Menu;
-import org.roddoc.vista.consola.disco.ArtistaCatalogo;
-import org.roddoc.vista.consola.disco.CancionCatalogo;
-import org.roddoc.vista.consola.disco.DiscoCatalogo;
-import org.roddoc.vista.consola.disco.DisqueraCatalogo;
+import org.roddoc.vista.consola.disco.*;
 
 public class ListaDisco extends LeerAcciones
 {
@@ -43,7 +40,6 @@ public class ListaDisco extends LeerAcciones
     {
         return 1;
     }
-
     @Override
     public int valorMaxMenu()
     {

@@ -55,4 +55,3 @@ public class Colonia extends Catalogo
                 "}";
     }
 }
-

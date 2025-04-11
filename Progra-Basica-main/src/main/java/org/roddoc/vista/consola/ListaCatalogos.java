@@ -4,7 +4,7 @@ import org.roddoc.vista.Ejecutable;
 import org.roddoc.vista.LeerAcciones;
 import org.roddoc.vista.Menu;
 
-public class    ListaCatalogos extends LeerAcciones
+public class ListaCatalogos extends LeerAcciones
 {
     public static ListaCatalogos listaCatalogos;
     private ListaCatalogos()
@@ -34,7 +34,6 @@ public class    ListaCatalogos extends LeerAcciones
     {
         return 1;
     }
-
     @Override
     public int valorMaxMenu()
     {

@@ -1,14 +1,15 @@
 package org.roddoc.vista.consola.usuario;
 
+import org.roddoc.jdbc.GenericJdbc;
+import org.roddoc.jdbc.impl.EstadoJdbcImpl;
 import org.roddoc.model.Estado;
 import org.roddoc.util.ReadUtil;
 import org.roddoc.vista.consola.GestorCatalogos;
 
-import java.io.File;
-
 public class EstadoCatalogo extends GestorCatalogos<Estado>
 {
     private static EstadoCatalogo estadoCatalogo;
+    private static final GenericJdbc<Estado> estadoJdbc = EstadoJdbcImpl.getInstance();
 
     public static EstadoCatalogo getInstance( )
     {
@@ -19,7 +20,10 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
         return estadoCatalogo;
     }
 
-    private EstadoCatalogo( ){ super(); }
+    private EstadoCatalogo( )
+    {
+        super(EstadoJdbcImpl.getInstance());
+    }
 
     @Override
     public Estado newT()
@@ -32,43 +36,19 @@ public class EstadoCatalogo extends GestorCatalogos<Estado>
     {
         System.out.print("> Teclee el nombre del estado: ");
         estado.setNombre( ReadUtil.read() );
+        estadoJdbc.save(estado);
         return true;
     }
 
     @Override
-    public void processEditT(Estado estado)
+    public void edit(Estado estado)
     {
-        System.out.println("\n> ID del estado siendo editado: "+estado.getId());
-        System.out.println("> Estado siendo editado: "+estado.getNombre());
+        System.out.print("> Ingrese el ID del estado a editar: ");
+        estado.setId( ReadUtil.readInt() );
         System.out.print("> Ingrese el nuevo nombre del estado: ");
         estado.setNombre( ReadUtil.read() );
-    }
 
-    @Override
-    public File getFile()
-    {
-        return new File("./src/main/fileStorage/Estados.object" );
-    }
-
-    public Estado getEstadoById() {
-        if (isListaEmpty()) {
-            System.out.println("> No hay estados registrados.");
-            return null;
-        }
-        while (true) {
-            System.out.print("> Ingrese el ID del estado: ");
-            int id = ReadUtil.readInt();
-            Estado estado = list.stream()
-                    .filter(e -> e.getId().equals(id))
-                    .findFirst()
-                    .orElse(null);
-            if (estado != null) {
-                return estado;
-            }
-            System.out.println("> ID incorrecto, inténtelo nuevamente.");
-        }
+        estadoJdbc.update(estado);
     }
 
 }
-
-
