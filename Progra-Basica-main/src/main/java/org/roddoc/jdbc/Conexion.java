@@ -68,7 +68,7 @@ public abstract class Conexion<T>
     {
         try
         {
-            if( connection == null )
+            if( connection == null || connection.isClosed() )
             {
                 if( !loadConnection( user, password, db, server ) )
                 {
