@@ -42,7 +42,7 @@ public class GeneroMusicalHiberImpl implements GenericSql<Genero_Musical>
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.persist(generoMusical);
+        session.merge(generoMusical);
         session.getTransaction().commit();
 
         session.close();

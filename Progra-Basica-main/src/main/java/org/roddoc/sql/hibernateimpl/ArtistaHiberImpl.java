@@ -42,7 +42,7 @@ public class ArtistaHiberImpl implements GenericSql<Artista>
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.persist(artista);
+        session.merge(artista);
         session.getTransaction().commit();
 
         session.close();

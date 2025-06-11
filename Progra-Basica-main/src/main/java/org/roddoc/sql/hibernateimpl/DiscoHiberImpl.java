@@ -42,7 +42,7 @@ public class DiscoHiberImpl implements GenericSql<Disco>
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.persist(disco);
+        session.merge(disco);
         session.getTransaction().commit();
 
         session.close();

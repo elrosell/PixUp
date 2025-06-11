@@ -48,7 +48,7 @@ public class EstadoHiberImpl implements GenericSql<Estado>
         Session session = HibernateUtil.getSession();
         session.beginTransaction(); //Crea un conjunto de instrucciones
 
-        session.persist(estado);
+        session.merge(estado);
         session.getTransaction().commit(); //Crea un commit de todo el conjunto de instrucciones
 
         session.close();

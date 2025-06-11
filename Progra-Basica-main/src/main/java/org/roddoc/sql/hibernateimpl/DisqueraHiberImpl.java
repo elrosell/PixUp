@@ -42,7 +42,7 @@ public class DisqueraHiberImpl implements GenericSql<Disquera>
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.persist(disquera);
+        session.merge(disquera);
         session.getTransaction().commit();
 
         session.close();

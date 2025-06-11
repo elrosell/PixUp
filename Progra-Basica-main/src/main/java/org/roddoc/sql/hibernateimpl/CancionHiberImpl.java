@@ -42,7 +42,7 @@ public class CancionHiberImpl implements GenericSql<Cancion>
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.persist(cancion);
+        session.merge(cancion);
         session.getTransaction().commit();
 
         session.close();

@@ -42,7 +42,7 @@ public class ColoniaHiberImpl implements GenericSql<Colonia>
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.persist(colonia);
+        session.merge(colonia);
         session.getTransaction().commit();
 
         session.close();

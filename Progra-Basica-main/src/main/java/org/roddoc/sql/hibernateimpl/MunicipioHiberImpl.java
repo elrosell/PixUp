@@ -42,7 +42,7 @@ public class MunicipioHiberImpl implements GenericSql<Municipio>
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.persist(municipio);
+        session.merge(municipio);
         session.getTransaction().commit();
 
         session.close();
