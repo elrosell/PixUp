@@ -1,62 +1,59 @@
 package org.roddoc.vista.consola;
-
-import org.roddoc.vista.LeerAcciones;
-import org.roddoc.vista.Ejecutable;
-import org.roddoc.vista.Menu;
+import org.roddoc.vista.*;
 
 public class Consola extends LeerAcciones
 {
-        private static Consola consola;
+    private static Consola consola;
 
-        private Consola()
-        {
-        }
+    private Consola()
+    {
+    }
 
-        public static Consola getInstance( )
+    public static Consola getInstance( )
+    {
+        if(consola==null)
         {
-            if(consola==null)
-            {
-                consola = new Consola();
-            }
-            return consola;
+            consola = new Consola();
         }
+        return consola;
+    }
 
-        @Override
-        public void despliegaMenu()
-        {
-            System.out.println("\n\t::: Menú principal :::");
-            System.out.println("\t> Selecciona una opción:");
-            System.out.println("1. Catalogo");
-            System.out.println("2. Pendiente");
-            System.out.println("3. Salir");
-            Menu.seleccionaOpcion();
-        }
+    @Override
+    public void despliegaMenu()
+    {
+        System.out.println("\t Menú principal");
+        System.out.println(" Selecciona una opción:");
+        System.out.println("1. Catalogo");
+        System.out.println("2. Pendiente");
+        System.out.println("3. Salir");
+        Menu.seleccionaOpcion();
+    }
 
-        @Override
-        public int valorMinMenu()
-        {
-            return 1;
-        }
-        @Override
-        public int valorMaxMenu()
-        {
-            return 3;
-        }
+    @Override
+    public int valorMinMenu()
+    {
+        return 1;
+    }
+    @Override
+    public int valorMaxMenu()
+    {
+        return 3;
+    }
 
-        @Override
-        public void procesaOpcion()
+    @Override
+    public void procesaOpcion()
+    {
+        Ejecutable ejecutable = null;
+        if(opcion==1)
         {
-            Ejecutable ejecutable = null;
-            if(opcion==1)
-            {
-                ejecutable = ListaCatalogos.getInstance();
-                ejecutable.setFlag( true );
-                ejecutable.run( );
-            }
-            if(opcion==2)
-            {
-                System.out.println("> No implementado.");
-            }
+            ejecutable = ListaCatalogos.getInstance();
+            ejecutable.setFlag( true );
+            ejecutable.run( );
+        }
+        if(opcion==2)
+        {
+            System.out.println("> No implementado.");
         }
     }
+}
 

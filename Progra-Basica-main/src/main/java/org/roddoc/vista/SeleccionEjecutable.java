@@ -23,8 +23,8 @@ public class SeleccionEjecutable extends LeerAcciones
     @Override
     public void despliegaMenu()
     {
-        System.out.println("\n\t:::¡Bienvenido a PixUp! :::");
-        System.out.println("\t> Selecciona tu método de acceso:");
+        System.out.println("\tBienvenido a PixUp");
+        System.out.println("Selecciona tu método de acceso:");
         System.out.println("1. Consola");
         System.out.println("2. Ventana");
         System.out.println("3. Salir");
@@ -58,3 +58,4 @@ public class SeleccionEjecutable extends LeerAcciones
         ejecutable.run();
     }
 }
+

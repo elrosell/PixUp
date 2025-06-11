@@ -1,28 +1,24 @@
 package org.roddoc.vista.consola.disco;
 
-import org.roddoc.jdbc.GenericJdbc;
-import org.roddoc.jdbc.impl.ArtistaJdbcImpl;
-import org.roddoc.jdbc.impl.DiscoJdbcImpl;
-import org.roddoc.jdbc.impl.DisqueraJdbcImpl;
-import org.roddoc.jdbc.impl.Genero_MusicalJdbcImpl;
-import org.roddoc.model.Artista;
-import org.roddoc.model.Disco;
-import org.roddoc.model.Disquera;
-import org.roddoc.model.Genero_Musical;
+import org.roddoc.sql.GenericSql;
+import org.roddoc.sql.hibernateimpl.ArtistaHiberImpl;
+import org.roddoc.sql.hibernateimpl.DiscoHiberImpl;
+import org.roddoc.model.*;
+import org.roddoc.sql.hibernateimpl.DisqueraHiberImpl;
+import org.roddoc.sql.hibernateimpl.GeneroMusicalHiberImpl;
 import org.roddoc.util.ReadUtil;
-import org.roddoc.vista.Menu;
 import org.roddoc.vista.consola.GestorCatalogos;
-
-import java.io.File;
+import java.time.LocalDate;
+import java.util.List;
 
 public class DiscoCatalogo extends GestorCatalogos<Disco>
 {
     private static DiscoCatalogo discoCatalogo;
-    private static final GenericJdbc<Disco> discoJdbc = DiscoJdbcImpl.getInstance();
+    private static final GenericSql<Disco> discoSql = DiscoHiberImpl.getInstance();
 
     private DiscoCatalogo()
     {
-        super(DiscoJdbcImpl.getInstance());
+        super(DiscoHiberImpl.getInstance());
     }
 
     public static DiscoCatalogo getInstance()
@@ -41,51 +37,89 @@ public class DiscoCatalogo extends GestorCatalogos<Disco>
 
     @Override
     public boolean processNewT(Disco disco) {
-        System.out.print("> Ingrese el título del disco: ");
+        System.out.print("Título del disco: ");
         disco.setTituloDisco( ReadUtil.read() );
-        System.out.print("> Ingrese el precio de venta: ");
+        System.out.print("Precio de venta: ");
         disco.setPrecio( ReadUtil.readDouble() );
-        System.out.print("> Ingrese el número de copias en inventario: ");
+        System.out.print("Número de copias en inventario: ");
         disco.setExistencias( ReadUtil.readInt() );
-        System.out.print("> Ingrese el descuento actual (si tiene): ");
+        System.out.print("Descuento actual (si tiene): ");
         disco.setDescuento( ReadUtil.readDouble() );
-        System.out.print("> Ingrese la fecha de lanzamiento, en formato 'YYYY-MM-DD': ");
-        disco.setFechaLanzamiento( ReadUtil.read() );
-        System.out.print("> Ingrese la imagen: ");
+
+        System.out.print("Fecha de lanzamiento (YYYY-MM-DD) : ");
+        String fechaStr = ReadUtil.read();
+        LocalDate fecha = LocalDate.parse(fechaStr);
+        disco.setFechaLanzamiento( fecha );
+
+        System.out.print(" Ingrese la imagen: ");
         disco.setImagen( ReadUtil.read() );
 
-        System.out.print("> Ingrese el ID de la disquera de su distribución: ");
-        Disquera disquera = DisqueraJdbcImpl.getInstance().findById( ReadUtil.readInt() );
-        if(disquera==null) { return false; }
-        else { disco.setDisquera( disquera ); }
+        DisqueraHiberImpl disqueraSql = DisqueraHiberImpl.getInstance();
+        List<Disquera> disqueraList = disqueraSql.findAll();
+        disqueraList.forEach(System.out::println);
 
-        System.out.print("> Ingrese el ID del artista al que pertenece: ");
-        Artista artista = ArtistaJdbcImpl.getInstance().findById( ReadUtil.readInt() );
-        if(artista==null) { return false; }
-        else { disco.setArtista(artista); }
+        System.out.print("ID de la disquera de su distribución: ");
+        Disquera disquera = disqueraSql.findById( ReadUtil.readInt() );
+        if(disquera==null)
+        {
+            System.out.println("❌ No encontrado.");
+            return false;
+        }
+        else
+        {
+            disco.setDisquera( disquera );
+        }
 
-        System.out.print("> Ingrese el ID del género musical al que pertenece: ");
-        Genero_Musical generoMusical = Genero_MusicalJdbcImpl.getInstance().findById( ReadUtil.readInt() );
-        if(generoMusical==null) { return false; }
-        else { disco.setGeneroMusical( generoMusical ); }
+        ArtistaHiberImpl artistaSql = ArtistaHiberImpl.getInstance();
+        List<Artista> artistaList = artistaSql.findAll();
+        artistaList.forEach(System.out::println);
 
-        discoJdbc.save(disco);
+        System.out.print("ID del artista al que pertenece: ");
+        Artista artista = artistaSql.findById( ReadUtil.readInt() );
+        if(artista==null)
+        {
+            System.out.println("❌ No encontrado.");
+            return false;
+        }
+        else
+        {
+            disco.setArtista(artista);
+        }
+
+        GeneroMusicalHiberImpl generoMusicalSql = GeneroMusicalHiberImpl.getInstance();
+        List<Genero_Musical> generoMusicalList = generoMusicalSql.findAll();
+        generoMusicalList.forEach(System.out::println);
+
+        System.out.print("ID del género musical al que pertenece: ");
+        Genero_Musical generoMusical = generoMusicalSql.findById( ReadUtil.readInt() );
+        if(generoMusical==null)
+        {
+            System.out.println("❌ No encontrado.");
+            return false;
+        }
+        else
+        {
+            disco.setGeneroMusical( generoMusical );
+        }
+
+        discoSql.save(disco);
         return true;
     }
 
     @Override
-    public void edit(Disco disco) {
-        System.out.print("> Ingrese el ID del disco a editar: ");
-        disco.setId( ReadUtil.readInt() );
-        System.out.print("> Ingrese el nuevo título del disco: ");
+    public boolean processEditT(Disco disco)
+    {
+        System.out.print("Nuevo título del disco: ");
         disco.setTituloDisco( ReadUtil.read() );
-        System.out.print("> Ingrese el nuevo precio de venta: ");
+        System.out.print("Nuevo precio de venta: ");
         disco.setPrecio( ReadUtil.readDouble() );
-        System.out.print("> Ingrese el nuevo número de copias en inventario: ");
+        System.out.print("Nuevo número de copias en inventario: ");
         disco.setExistencias( ReadUtil.readInt() );
-        System.out.print("> Ingrese el nuevo descuento actual (si tiene): ");
+        System.out.print("Nuevo descuento actual (si tiene): ");
         disco.setDescuento( ReadUtil.readDouble() );
 
-        discoJdbc.update(disco);
+        discoSql.update(disco);
+        return true;
     }
 }
+

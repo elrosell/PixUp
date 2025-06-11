@@ -1,5 +1,4 @@
 package org.roddoc.vista.consola;
-
 import org.roddoc.vista.Ejecutable;
 import org.roddoc.vista.LeerAcciones;
 import org.roddoc.vista.Menu;
@@ -22,7 +21,7 @@ public class ListaCatalogos extends LeerAcciones
     @Override
     public void despliegaMenu()
     {
-        System.out.println("\n\t::: Lista de Catálogos Disponibles :::");
+        System.out.println("\t Lista de Catálogos Disponibles ");
         System.out.println( "1.- Usuarios");
         System.out.println( "2.- Discos");
         System.out.println( "3.- Salir");
@@ -66,3 +65,4 @@ public class ListaCatalogos extends LeerAcciones
         }
     }
 }
+

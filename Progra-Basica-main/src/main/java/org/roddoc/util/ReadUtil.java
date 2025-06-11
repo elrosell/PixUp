@@ -1,7 +1,6 @@
 package org.roddoc.util;
 
 import org.roddoc.vista.Menu;
-
 import java.util.Scanner;
 
 public class ReadUtil {
@@ -16,7 +15,8 @@ public class ReadUtil {
         return scanner;
     }
 
-    public static ReadUtil getInstance() {
+    public static ReadUtil getInstance()
+    {
         if (readUtil == null) {
             readUtil = new ReadUtil();
         }
@@ -27,7 +27,8 @@ public class ReadUtil {
         return getInstance().getScanner().nextLine();
     }
 
-    public static Integer readInt() {
+    public static Integer readInt()
+    {
         String valor;
         Integer aux = null;
 
@@ -44,7 +45,8 @@ public class ReadUtil {
         }
     }
 
-    public static Double readDouble() {
+    public static Double readDouble()
+    {
         String valor;
         Double aux = null;
 

@@ -1,21 +1,23 @@
 package org.roddoc.vista.consola.disco;
 
-import org.roddoc.jdbc.GenericJdbc;
-import org.roddoc.jdbc.impl.CancionJdbcImpl;
-import org.roddoc.jdbc.impl.DiscoJdbcImpl;
+import org.roddoc.sql.GenericSql;
 import org.roddoc.model.*;
+import org.roddoc.sql.hibernateimpl.CancionHiberImpl;
+import org.roddoc.sql.hibernateimpl.DiscoHiberImpl;
 import org.roddoc.util.ReadUtil;
 import org.roddoc.vista.consola.GestorCatalogos;
-import java.io.File;
+
+import java.time.LocalTime;
+import java.util.List;
 
 public class CancionCatalogo extends GestorCatalogos<Cancion>
 {
     private static CancionCatalogo cancionCatalogo;
-    private static final GenericJdbc<Cancion> cancionJdbc = CancionJdbcImpl.getInstance();
+    private static final GenericSql<Cancion> cancionSql = CancionHiberImpl.getInstance();
 
     private CancionCatalogo()
     {
-        super(CancionJdbcImpl.getInstance());
+        super(CancionHiberImpl.getInstance());
     }
 
     public static CancionCatalogo getInstance()
@@ -33,29 +35,58 @@ public class CancionCatalogo extends GestorCatalogos<Cancion>
     }
 
     @Override
-    public boolean processNewT(Cancion cancion) {
-        System.out.print("> Ingrese el título de la canción: ");
+    public boolean processNewT(Cancion cancion)
+    {
+        System.out.print("Título de la canción: ");
         cancion.setTituloCancion( ReadUtil.read() );
-        System.out.print("> Ingrese la duración de la canción en minutos: ");
-        cancion.setDuracion( ReadUtil.readDouble() );
+        System.out.print("Duración de la canción (HH:MM:SS) :");
+        String duracionStr = ReadUtil.read();
 
-        System.out.print("> Ingrese el ID del disco al que pertenece: ");
-        Disco disco = DiscoJdbcImpl.getInstance().findById( ReadUtil.readInt() );
-        if(disco==null) { return false; }
-        else { cancion.setDisco( disco ); }
+        try
+        {
+            String[] partes = duracionStr.split(":"); // Separa los minutos y los segundos
+            int minutos = Integer.parseInt(partes[0]);
+            int segundos = Integer.parseInt(partes[1]);
 
-        cancionJdbc.save(cancion);
+            LocalTime duracion = LocalTime.of(0, minutos, segundos); // HH:MM:SS
+            cancion.setDuracion(duracion);
+        }
+        catch (Exception e)
+        {
+            System.out.println("❌ Duración inválida.");
+        }
+
+        DiscoHiberImpl discoHiber = DiscoHiberImpl.getInstance();
+        List<Disco> discoList = discoHiber.findAll();
+        discoList.forEach(System.out::println);
+
+        System.out.print(" ID del disco al que pertenece: ");
+        Disco disco = discoHiber.findById( ReadUtil.readInt() );
+        if(disco==null)
+        {
+            System.out.println("❌ No encontrado.");
+            return false;
+        }
+        else
+        {
+            cancion.setDisco( disco );
+        }
+
+        cancionSql.save(cancion);
         return true;
     }
 
     @Override
-    public void edit(Cancion cancion) {
-        System.out.print("> Ingrese el ID de la canción a editar: ");
-        cancion.setId( ReadUtil.readInt() );
-        System.out.print("> Ingrese el nuevo título de la canción: ");
+    public boolean processEditT(Cancion cancion)
+    {
+        System.out.print("Nuevo título de la canción: ");
         cancion.setTituloCancion( ReadUtil.read() );
 
-        cancionJdbc.update(cancion);
-    }
+        System.out.print("Nueva duración de la canción (HH:MM:SS) : ");
+        cancion.setTituloCancion( ReadUtil.read() );
 
+        cancionSql.update(cancion);
+        return true;
+    }
 }
+

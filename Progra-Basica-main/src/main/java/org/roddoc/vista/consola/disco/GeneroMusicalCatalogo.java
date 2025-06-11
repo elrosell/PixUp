@@ -1,19 +1,18 @@
 package org.roddoc.vista.consola.disco;
-
-import org.roddoc.jdbc.GenericJdbc;
-import org.roddoc.jdbc.impl.Genero_MusicalJdbcImpl;
+import org.roddoc.sql.GenericSql;
 import org.roddoc.model.Genero_Musical;
+import org.roddoc.sql.hibernateimpl.GeneroMusicalHiberImpl;
 import org.roddoc.util.ReadUtil;
 import org.roddoc.vista.consola.GestorCatalogos;
 
 public class GeneroMusicalCatalogo extends GestorCatalogos<Genero_Musical>
 {
     private static GeneroMusicalCatalogo generoMusicalCatalogo;
-    private static final GenericJdbc<Genero_Musical> genero_musicalJdbc = Genero_MusicalJdbcImpl.getInstance();
+    private static final GenericSql<Genero_Musical> genero_MusicalSql = GeneroMusicalHiberImpl.getInstance();
 
     private GeneroMusicalCatalogo()
     {
-        super(Genero_MusicalJdbcImpl.getInstance());
+        super(GeneroMusicalHiberImpl.getInstance());
     }
 
     public static GeneroMusicalCatalogo getInstance()
@@ -33,21 +32,19 @@ public class GeneroMusicalCatalogo extends GestorCatalogos<Genero_Musical>
     @Override
     public boolean processNewT(Genero_Musical generoMusical)
     {
-        System.out.print("> Ingrese el género musical: ");
+        System.out.print("Género musical: ");
         generoMusical.setGenero( ReadUtil.read() );
-        genero_musicalJdbc.save(generoMusical);
+        genero_MusicalSql.save(generoMusical);
         return true;
     }
 
     @Override
-    public void edit(Genero_Musical generoMusical)
+    public boolean processEditT(Genero_Musical generoMusical)
     {
-        System.out.print("> Ingrese el ID del género musical a editar: ");
-        generoMusical.setId( ReadUtil.readInt() );
-        System.out.print("> Ingrese el nuevo nombre del género musical: ");
+        System.out.print("Nuevo nombre del género musical: ");
         generoMusical.setGenero( ReadUtil.read() );
 
-        genero_musicalJdbc.update(generoMusical);
+        genero_MusicalSql.update(generoMusical);
+        return true;
     }
-
 }

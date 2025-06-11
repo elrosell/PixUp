@@ -1,20 +1,18 @@
 package org.roddoc.vista.consola.disco;
-
-import org.roddoc.jdbc.GenericJdbc;
-import org.roddoc.jdbc.impl.DisqueraJdbcImpl;
-import org.roddoc.model.*;
+import org.roddoc.sql.GenericSql;
+import org.roddoc.model.Disquera;
+import org.roddoc.sql.hibernateimpl.DisqueraHiberImpl;
 import org.roddoc.util.ReadUtil;
 import org.roddoc.vista.consola.GestorCatalogos;
-
 
 public class DisqueraCatalogo extends GestorCatalogos<Disquera>
 {
     private static DisqueraCatalogo disqueraCatalogo;
-    private static final GenericJdbc<Disquera> disqueraJdbc = DisqueraJdbcImpl.getInstance();
+    private static final GenericSql<Disquera> disqueraSql = DisqueraHiberImpl.getInstance();
 
     private DisqueraCatalogo()
     {
-        super(DisqueraJdbcImpl.getInstance());
+        super(DisqueraHiberImpl.getInstance());
     }
 
     public static DisqueraCatalogo getInstance()
@@ -34,21 +32,19 @@ public class DisqueraCatalogo extends GestorCatalogos<Disquera>
     @Override
     public boolean processNewT(Disquera disquera)
     {
-        System.out.print("> Ingrese el nombre de la disquera: ");
+        System.out.print("Nombre de la disquera: ");
         disquera.setDisquera( ReadUtil.read() );
-        disqueraJdbc.save(disquera);
+        disqueraSql.save(disquera);
         return true;
     }
 
     @Override
-    public void edit(Disquera disquera)
+    public boolean processEditT(Disquera disquera)
     {
-        System.out.print("> Ingrese el ID de la disquera a editar: ");
-        disquera.setId( ReadUtil.readInt() );
-        System.out.print("> Ingrese el nuevo nombre de la disquera: ");
+        System.out.print("Nuevo nombre de la disquera: ");
         disquera.setDisquera( ReadUtil.read() );
 
-        disqueraJdbc.update(disquera);
+        disqueraSql.update(disquera);
+        return true;
     }
-
 }

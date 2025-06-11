@@ -1,17 +1,18 @@
 package org.roddoc.vista.consola.usuario;
-
-import org.roddoc.jdbc.GenericJdbc;
-import org.roddoc.jdbc.impl.EstadoJdbcImpl;
-import org.roddoc.jdbc.impl.MunicipioJdbcImpl;
+import org.roddoc.sql.GenericSql;
+import org.roddoc.sql.hibernateimpl.EstadoHiberImpl;
+import org.roddoc.sql.hibernateimpl.MunicipioHiberImpl;
 import org.roddoc.model.Estado;
 import org.roddoc.model.Municipio;
 import org.roddoc.util.ReadUtil;
 import org.roddoc.vista.consola.GestorCatalogos;
 
+import java.util.List;
+
 public class MunicipioCatalogo extends GestorCatalogos<Municipio>
 {
     private static MunicipioCatalogo municipioCatalogo;
-    private static final GenericJdbc<Municipio> municipioJdbc = MunicipioJdbcImpl.getInstance();
+    private static final GenericSql<Municipio> municipioSql = MunicipioHiberImpl.getInstance();
 
     public static MunicipioCatalogo getInstance( )
     {
@@ -24,7 +25,7 @@ public class MunicipioCatalogo extends GestorCatalogos<Municipio>
 
     private MunicipioCatalogo( )
     {
-        super(MunicipioJdbcImpl.getInstance());
+        super(MunicipioHiberImpl.getInstance());
     }
 
     @Override
@@ -36,31 +37,34 @@ public class MunicipioCatalogo extends GestorCatalogos<Municipio>
     @Override
     public boolean processNewT(Municipio municipio)
     {
-        System.out.print("> Teclee el nombre del municipio: ");
-        municipio.setNombre( ReadUtil.read() );
+        System.out.print("Nombre del municipio: ");
+        municipio.setMunicipio( ReadUtil.read() );
 
-        System.out.print("> Teclee el ID del estado al que pertenece: ");
-        Estado estado = EstadoJdbcImpl.getInstance().findById(ReadUtil.readInt());
+        EstadoHiberImpl estadoSql = EstadoHiberImpl.getInstance();
+        List<Estado> list = estadoSql.findAll();
+        list.forEach(System.out::println);
+        System.out.print("ID del estado al que pertenece: ");
 
+        Estado estado = EstadoHiberImpl.getInstance().findById(ReadUtil.readInt());
         if(estado==null)
         {
+            System.out.println("❌ No encontrado.");
             return false;
         }
         municipio.setEstado(estado);
 
-        municipioJdbc.save(municipio);
+        municipioSql.save(municipio);
         return true;
     }
 
     @Override
-    public void edit(Municipio municipio)
+    public boolean processEditT(Municipio municipio)
     {
-        System.out.print("> Ingrese el ID del municipio a editar: ");
-        municipio.setId( ReadUtil.readInt() );
-        System.out.print("> Ingrese el nuevo nombre del municipio: ");
-        municipio.setNombre( ReadUtil.read() );
+        System.out.print("Nuevo nombre del municipio: ");
+        municipio.setMunicipio( ReadUtil.read() );
 
-        municipioJdbc.update(municipio);
+        municipioSql.update(municipio);
+        return true;
     }
-
 }
+

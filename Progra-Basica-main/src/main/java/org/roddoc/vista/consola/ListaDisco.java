@@ -1,8 +1,6 @@
 package org.roddoc.vista.consola;
 
-import org.roddoc.vista.Ejecutable;
-import org.roddoc.vista.LeerAcciones;
-import org.roddoc.vista.Menu;
+import org.roddoc.vista.*;
 import org.roddoc.vista.consola.disco.*;
 
 public class ListaDisco extends LeerAcciones
@@ -25,7 +23,7 @@ public class ListaDisco extends LeerAcciones
     @Override
     public void despliegaMenu()
     {
-        System.out.println("\n\t::: Catálogo de Discos :::");
+        System.out.println("\t Catálogo de Discos ");
         System.out.println( "1.- Artista");
         System.out.println( "2.- Disquera");
         System.out.println( "3.- Genero músical");
