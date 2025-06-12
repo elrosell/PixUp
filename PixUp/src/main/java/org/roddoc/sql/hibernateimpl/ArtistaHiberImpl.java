@@ -65,15 +65,21 @@ public class ArtistaHiberImpl implements GenericSql<Artista>
     @Override
     public boolean delete(Artista artista)
     {
+        if (artista == null) return false;
+
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.remove(artista);
-        session.getTransaction().commit();
+        Artista attached = session.get(Artista.class, artista.getId());
+        if (attached != null) {
+            session.remove(attached);
+        }
 
+        session.getTransaction().commit();
         session.close();
         return true;
     }
+
 
     @Override
     public Artista findById(Integer id)

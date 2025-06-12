@@ -76,15 +76,16 @@ public final class HibernateUtil
         return sessionFactory;
     }
 
-    public static Session getSession( )
+    public static Session getSession()
     {
-        if( sessionFactory == null || sessionFactory.isClosed() )
+        if (sessionFactory == null || sessionFactory.isClosed())
         {
-            if( !loadSessionFactory() )
+            if (!loadSessionFactory())
             {
-                return null;
+                throw new IllegalStateException("No se pudo crear el SessionFactory.");
             }
         }
-        return sessionFactory.openSession( );
+        return sessionFactory.openSession();
     }
+
 }

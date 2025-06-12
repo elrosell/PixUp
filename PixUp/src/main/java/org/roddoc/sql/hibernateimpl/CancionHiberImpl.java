@@ -40,13 +40,17 @@ public class CancionHiberImpl implements GenericSql<Cancion>
     public boolean save(Cancion cancion)
     {
         Session session = HibernateUtil.getSession();
-        session.beginTransaction();
-
-        session.merge(cancion);
-        session.getTransaction().commit();
-
-        session.close();
-        return true;
+        try {
+            session.beginTransaction();
+            session.save(cancion); // NO uses merge() para objetos nuevos
+            session.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.roddoc.sql.hibernateimpl;
 
 import org.roddoc.hibernate.HibernateUtil;
+import org.roddoc.model.Artista;
 import org.roddoc.model.Disco;
 import org.roddoc.sql.GenericSql;
 import org.hibernate.Session;
@@ -65,12 +66,17 @@ public class DiscoHiberImpl implements GenericSql<Disco>
     @Override
     public boolean delete(Disco disco)
     {
+        if (disco == null) return false;
+
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        session.remove(disco);
-        session.getTransaction().commit();
+        Disco attached = session.get(Disco.class, disco.getId());
+        if (attached != null) {
+            session.remove(attached);
+        }
 
+        session.getTransaction().commit();
         session.close();
         return true;
     }
